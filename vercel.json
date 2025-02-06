@@ -1,30 +1,15 @@
-{
-  "version": 2,
-  "builds": [
     {
-      "src": "wechatblog/index.php",  //  指定 Typecho 入口文件路径
-      "use": "vercel-php@latest",
-      "config": {
-        "vercel-php": {
-          "composer": {
-            "installFlags": ["--no-dev", "--prefer-dist", "--optimize-autoloader"]
-          },
-          "extensions": [
-            "pdo_pgsql"  //  只保留 pdo_pgsql 扩展，因为我们使用 Vercel Postgres
-          ],
-          "phpVersion": "8.1" //  您可以选择其他 Vercel 支持的 PHP 版本，例如 8.2, 8.3 等
+      "version": 2,
+      "builds": [
+        {
+          "src": "index.php",  
+          "use": "@vercel/php"
         }
-      }
+      ],
+      "routes": [
+        {
+          "src": "/(.*)",
+          "dest": "/index.php?/$1"
+        }
+      ]
     }
-  ],
-  "routes": [
-    {
-      "src": "/(.*\\.php)$",
-      "dest": "/wechatblog/$1"  //  所有 PHP 请求转发到 wechatblog 文件夹
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/wechatblog/index.php/$1" //  所有其他请求转发到 Typecho 入口文件
-    }
-  ]
-}
